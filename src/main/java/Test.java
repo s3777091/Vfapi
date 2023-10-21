@@ -8,23 +8,22 @@ import java.io.IOException;
 public class Test {
     public static void main(String[] args) {
         try {
-            Document doc = Jsoup.connect("https://vnexpress.net/bat-coc-con-trai-cua-nguoi-tinh-4666936.html").get();
+            String url = "https://www.24h.com.vn/chinh-tri-xa-hoi-c981.html"; // Replace with the actual URL
+            Document doc = Jsoup.connect(url).get();
 
-            Element articleElement = doc.selectFirst("article.fck_detail");
+            // Select all article elements within the specified div
+            Elements articleElements = doc.select("div.cate-24h-foot-home-latest-list article");
 
-            for (Element child : articleElement.children()) {
-                if ("p".equals(child.tagName()) && "Normal".equals(child.className())) {
-                    System.out.println(child.text());
-                } else if ("figure".equals(child.tagName())) {
-                    String imageUrl = child.selectFirst("img[itemprop=contentUrl]").attr("data-src");
-                    System.out.println("Image URL: " + imageUrl);
-                }
+            for (Element articleElement : articleElements) {
+                // Extract the title
+                String title = articleElement.select("h3.cate-24h-foot-home-latest-list__name a").text();
+
+                // Extract the image URL
+                String imageUrl = articleElement.select("figure.cate-24h-foot-home-latest-list__ava a").attr("data-urlimg");
+
+                System.out.println("Title: " + title);
+                System.out.println("Image URL: " + imageUrl);
             }
-
-            Elements authorElements = articleElement.select("p[style=text-align:right]");
-            String author = authorElements.size() > 0 ? authorElements.first().text() : "Unknown";
-            System.out.println("Author: " + author);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
