@@ -10,6 +10,7 @@ public class Article {
     private String title;
     private String lead;
     private String url;
-    private int publishTime;
+    private String image;
+    private String publishTime;
 
 }
